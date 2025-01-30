@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import api from '../../api';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         // 로그인 처리 로직을 여기에 작성
+        if (!email || !password) {
+            alert('아이디와 비밀번호를 입력하세요.');
+            return;
+        }
+
+        try {
+            const response = await api.post('https://your-api.com/login', {
+                email: email,
+                password: password
+            });
+
+            console.log('로그인 성공:', response.data);
+            // 로그인 성공 시 처리 (예: 토큰 저장, 화면 전환)
+        } catch (error) {
+            console.error('로그인 실패:', error.response?.data || error.message);
+            alert('로그인에 실패했습니다.');
+        }
         console.log('Email:', email);
         console.log('Password:', password);
     };
